@@ -34,7 +34,6 @@ module Katello
     param :environment_id, :identifier, :desc => N_("environment id")
     param :content_view_id, :identifier, :desc => N_("content view id")
     param :max_hosts, :number, :desc => N_("maximum number of registered content hosts")
-    param :unlimited_hosts, :bool, :desc => N_("can the activation key have unlimited hosts")
     def create
       @activation_key = ActivationKey.new(activation_key_params) do |activation_key|
         activation_key.environment = @environment if @environment
