@@ -18,20 +18,38 @@
   </thead>
   <tbody>
     <tr>
-      <td><i class="label label-danger" style="margin-right: 6px">&nbsp;</i><%= _("Invalid") %></td>
-      <td style="text-align:right"><%= invalid_consumer_count %></td>
+      <td><%= link_to('/content_hosts?search=subscription_status=invalid') do %>
+        <i class="label label-danger" style="margin-right: 6px">&nbsp;</i><%= _("Invalid") %></td>
+      <% end %>
+      <td style="text-align:right"><%= link_to('/content_hosts?search=subscription_status=invalid') do %>
+        <%= invalid_consumer_count %></td>
+      <% end %>
     </tr>
     <tr>
-      <td><i class="label label-warning" style="margin-right: 6px">&nbsp;</i><%= _("Partial") %></td>
-      <td style="text-align:right;"><%= partial_consumer_count %></td>
+      <td><%= link_to('/content_hosts?search=subscription_status=partial') do %>
+        <i class="label label-warning" style="margin-right: 6px">&nbsp;</i><%= _("Partial") %></td>
+      <% end %>
+      <td style="text-align:right"><%= link_to('/content_hosts?search=subscription_status=partial') do %>
+        <%= partial_consumer_count %></td>
+      <% end %>
     </tr>
     <tr>
-      <td><i class="label label-success" style="margin-right: 6px">&nbsp;</i><%= _("Valid") %></td>
-      <td style="text-align:right;"><%= valid_consumer_count %></td>
+      <td><%= link_to('/content_hosts?search=subscription_status=valid') do %>
+        <i class="label label-success" style="margin-right: 6px">&nbsp;</i><%= _("Valid") %></td>
+      <% end %>
+      <td style="text-align:right"><%= link_to('/content_hosts?search=subscription_status=valid') do %>
+        <%= valid_consumer_count %></td>
+      <% end %>
     </tr>
     <tr>
-      <td><h4><%= _("Total Content Hosts") %></h4></td>
-      <td style="text-align:right;"><%= total_count %></td>
+      <td><h4>
+          <%= link_to('/content_hosts') do %>
+            <%= _("Total Content Hosts") %>
+          <% end %>
+      </h4></td>
+      <td style="text-align:right;">
+        <%= link_to('/content_hosts') do %> <%= total_count %> <% end %>
+      </td>
     </tr>
   </tbody>
 </table>
