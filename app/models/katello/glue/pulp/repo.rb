@@ -203,7 +203,7 @@ module Katello
         importer_options
       end
 
-      def generate_distributors(capsule = false)
+      def generate_distributors(capsule_content = nil)
         case self.content_type
         when Repository::YUM_TYPE
           yum_dist_id = self.pulp_id
@@ -216,14 +216,14 @@ module Katello
                                                                  :destination_distributor_id => yum_dist_id)
           export_dist = Runcible::Models::ExportDistributor.new(false, false, self.relative_path)
           distributors = [yum_dist, export_dist]
-          distributors << clone_dist unless capsule
+          distributors << clone_dist unless capsule_content
         when Repository::FILE_TYPE
           dist = Runcible::Models::IsoDistributor.new(true, true)
           dist.auto_publish = true
           distributors = [dist]
         when Repository::PUPPET_TYPE
           dist_options = { :id => self.pulp_id, :auto_publish => true }
-          repo_path =  File.join(SETTINGS[:katello][:puppet_repo_root],
+          repo_path =  File.join(capsule_content.capsule.puppet_path,
                                  Environment.construct_name(self.organization,
                                                             self.environment,
                                                             self.content_view),
@@ -770,8 +770,8 @@ module Katello
         end
       end
 
-      def distributors_match?(capsule_distributors)
-        generated_distributor_configs = self.generate_distributors(true)
+      def distributors_match?(capsule_distributors, capsule)
+        generated_distributor_configs = self.generate_distributors(capsule)
         generated_distributor_configs.all? do |gen_dist|
           type = gen_dist.class.type_id
           found_on_capsule = capsule_distributors.find { |dist| dist['distributor_type_id'] == type }

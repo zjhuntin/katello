@@ -29,6 +29,7 @@ Foreman::Application.routes.draw do
     member do
       get :pulp_storage
       get :pulp_status
+      get :capsule_puppet_path
     end
   end
 

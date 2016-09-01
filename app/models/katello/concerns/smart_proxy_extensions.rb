@@ -10,6 +10,8 @@ module Katello
         include ForemanTasks::Concerns::ActionSubject
         include LazyAccessor
 
+        alias_method_chain :refresh, :puppet_path
+
         before_create :associate_organizations
         before_create :associate_default_location
         before_create :associate_lifecycle_environments
@@ -43,6 +45,23 @@ module Katello
         def self.default_capsule
           with_features(PULP_FEATURE).first
         end
+      end
+
+      def puppet_path
+        self[:puppet_path] || update_puppet_path
+      end
+
+      def update_puppet_path
+        return unless has_feature?(PULP_NODE_FEATURE)
+        path = ProxyAPI::PulpNode.new(:url => self.url).capsule_puppet_path['puppet_content_dir']
+        self.update_attribute(:puppet_path, path) if path
+        path
+      end
+
+      def refresh_with_puppet_path
+        errors = refresh_without_katello
+        update_puppet_path
+        errors
       end
 
       def pulp_node

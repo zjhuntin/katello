@@ -10,7 +10,7 @@ Foreman::Plugin.find(:katello).security_block :capsule_content do
 
   permission :view_capsule_content,
             {
-              'smart_proxies' => [:pulp_storage, :pulp_status, :show_with_content]
+              'smart_proxies' => [:capsule_puppet_path, :pulp_storage, :pulp_status, :show_with_content]
             },
             :resource_type => "SmartProxy"
 end
